@@ -16,10 +16,7 @@ import type { ZodType } from "zod";
  * @param schema Optional Zod schema to validate and transform each row.
  * @returns a "promise" to produce a 2-d array of cell values, or an object with validated data and errors
  */
-export async function parseCSV<T>(path: string, schema?: ZodType<T>): 
-Promise<string[][] | { data: T[]; errors: { rowIndex: number; raw: string[]; message: string }[] }
-> {
-  // runtime guard for the path argument
+export async function parseCSV<T>(path: string, schema?: ZodType<T>): Promise< string[][] | { data: T[]; errors: { rowIndex: number; raw: string[]; message: string }[] } > {
   if (typeof path !== "string") {
     throw new TypeError("parseCSV: 'path' must be a string file path");
   }
@@ -43,24 +40,24 @@ Promise<string[][] | { data: T[]; errors: { rowIndex: number; raw: string[]; mes
     result.push(values)
   }
 
-  // if the caller passes undefined in place of a schema, fall back to previous behavior
+
   if (!schema) {
     return result;
   }
 
-  // runtime sanity check for the provided schema
+
   if (typeof (schema as any)?.safeParse !== "function") {
     throw new TypeError("parseCSV: 'schema' must be a Zod schema (with .safeParse)");
   }
 
-  // validate and transform each CSV row via the given schema
+
   const data: T[] = [];
   const errors: { rowIndex: number; raw: string[]; message: string }[] = [];
 
   for (let i = 0; i < result.length; i++) {
     const rawRow = result[i];
     const parsed = schema.safeParse(rawRow);
-    
+
     if (parsed.success) {
       data.push(parsed.data);
     } else {
@@ -72,6 +69,6 @@ Promise<string[][] | { data: T[]; errors: { rowIndex: number; raw: string[]; mes
     }
   }
 
-  // return both successful and failed rows
+  
   return { data, errors };
 }

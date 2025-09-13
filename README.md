@@ -59,19 +59,20 @@ As a developer, I want row/column numbers and snippets included in error message
 
 ### Design Choices
 
-### 1340 Supplement
+### 1340 Supplement 
+I'm in 320 but just wanted to answer some of the questions for myself. 
 
 - #### 1. Correctness
 
 - #### 2. Random, On-Demand Generation
 
 - #### 3. Overall experience, Bugs encountered and resolved
-#### Errors/Bugs:
+#### Errors/Bugs:Had a lot of issues with my libaries importing for some reason and I fixed it by clearing my cache and repulling my code form a previous commit. I also had issues with the .transform as zod was expecting my output types to match. I just utilized the as any to solve this. 
 #### Tests:
 #### How To…
 
 #### Team members and contributions (include cs logins):
 
 #### Collaborators (cslogins of anyone you worked with on this project and/or generative AI):
-#### Total estimated time it took to complete project:
-#### Link to GitHub Repo:  
+#### Total estimated time it took to complete project:7
+#### Link to GitHub Repo:  https://github.com/cs0320-f25/typescript-csv-joshinator44
