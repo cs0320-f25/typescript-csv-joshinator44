@@ -58,18 +58,30 @@ As a developer, I want row/column numbers and snippets included in error message
     where I got things like Async iteration or dealing with streams which is something I totally didn't think about but was important to think about. 
 
 ### Design Choices
+I used as any when passing schemas to parseCSV. The TypeScript type inference was too strict when passing in zod schemas so I used as any. I used a union return type to allow for backward compatibility while supporting the new schema validation. Lastly I added a lot fo runtime type guards to ensure that the path coming in is a string and the safeParse can catch early errors during runtime. 
 
 ### 1340 Supplement 
-I'm in 320 but just wanted to answer some of the questions for myself. 
+
 
 - #### 1. Correctness
-
+A CSV parse is correct when it reads and parses data according to the format while also being able to handle edge cases. So it should be able to split rows by line endings, split columns by commas, and trim the white space. Also, using schema validation it shold be able to identify which rows pass validation and have clear error information. 
 - #### 2. Random, On-Demand Generation
-
+If there was a function that randomely generated CSV data it would be really helpful for testing. I could use the function to make more edge cases and catch more errors with our parser. Right now I only have 8 tests total which definetly doesn't account for ALL possible bugs. Additionally we could use this function to stress test our schema and ensure that our error messaging is corret. 
 - #### 3. Overall experience, Bugs encountered and resolved
-#### Errors/Bugs:Had a lot of issues with my libaries importing for some reason and I fixed it by clearing my cache and repulling my code form a previous commit. I also had issues with the .transform as zod was expecting my output types to match. I just utilized the as any to solve this. 
+#### Errors/Bugs:
+Had a lot of issues with my libaries importing for some reason and I fixed it by clearing my cache and repulling my code form a previous commit. I also had issues with the .transform as zod was expecting my output types to match. I just utilized the as any to solve this. I ran into so many red squiggly lines that had to do with type inferences, and I really had to think about what types I'm taking in and transforming them with (especially with zod). 
 #### Tests:
+Basic  parsing tests: Verify that the parser correctly reads CSV files and returns string arrays when no schema is provided
+Schema validation tests: Ensure that when a Zod schema is provided all valid rows are transformed into objects and invalid rows are collected with error information
+Runtime type guard tests: Wanted to make sure that the parser throws appropriate TypeErrors for invalid inputs like non-string paths or invalid schemas
+Edge case tests: Data type preservation without schemas and correct error reporting with row indices
 #### How To…
+To Test:
+Run npm test to execute all tests
+Run npm test basic-parser.test.ts to run only parser tests
+
+And to run:
+npm install
 
 #### Team members and contributions (include cs logins):
 
